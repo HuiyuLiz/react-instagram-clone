@@ -4,7 +4,7 @@ import Sidebar from '@/components/shared/sidebar'
 
 import UserCard from './components/shared/user-card'
 
-const App = () => {
+const Root = () => {
   return (
     <div className="grid min-h-screen w-full grid-cols-[280px_1fr]">
       <Sidebar></Sidebar>
@@ -23,4 +23,4 @@ const App = () => {
   )
 }
 
-export default App
+export default Root

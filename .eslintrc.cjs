@@ -31,7 +31,7 @@ module.exports = {
   },
   plugins: ['react', '@typescript-eslint', 'react-hooks', 'prettier'],
   rules: {
-    indent: [2, 2],
+    indent: ["off", 2],
     'react/jsx-max-props-per-line': [2, { maximum: { single: 3, multi: 1 } }],
     'react/jsx-wrap-multilines': 2,
     semi: 2,
