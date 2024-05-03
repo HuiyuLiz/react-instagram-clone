@@ -4,7 +4,6 @@ import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import * as z from 'zod'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -16,34 +15,30 @@ import {
   FormMessage
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-
-const signupformSchema = z.object({
-  name: z.string().min(2, { message: 'Name must be at least 2 characters' }),
-  username: z
-    .string()
-    .min(2, { message: 'Username must be at least 2 characters' }),
-  email: z.string().email({ message: 'Enter a valid email address' }),
-  password: z
-    .string()
-    .min(8, { message: 'Password must be at least 8 characters' })
-})
-
-type UserFormValue = z.infer<typeof signupformSchema>
+import { useToast } from '@/components/ui/use-toast'
+import { createUserAccount } from '@/lib/appwrite/auth-service'
+import {
+  type SignUpFormValue,
+  signupformSchema
+} from '@/lib/appwrite/auth-service.type'
 
 export default function SignupForm() {
-  const [loading, setLoading] = useState(false)
+  const { toast } = useToast()
+  const [loading] = useState(false)
   const defaultValues = {
     email: ''
   }
-  const form = useForm<UserFormValue>({
+  const form = useForm<SignUpFormValue>({
     resolver: zodResolver(signupformSchema),
     defaultValues
   })
 
-  const onSubmit = async (data: UserFormValue) => {
-    setLoading(true)
-    console.log(data)
-    setLoading(false)
+  const onSubmit = async (data: SignUpFormValue) => {
+    const newUser = await createUserAccount(data)
+
+    if (newUser === undefined || newUser === null) {
+      toast({ title: 'Sign up failed. Please try again.' })
+    }
   }
 
   return (
@@ -145,7 +140,7 @@ export default function SignupForm() {
               className="underline underline-offset-4 hover:text-primary"
             >
               Sign In
-            </Link>{' '}
+            </Link>
           </p>
         </form>
       </Form>

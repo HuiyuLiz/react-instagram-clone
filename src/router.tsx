@@ -1,7 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom'
 
-import SigninForm from '@/components/form/signin-form'
-import SignupForm from '@/components/form/signup-form'
+import SigninForm from '@/components/forms/signin-form'
+import SignupForm from '@/components/forms/signup-form'
 import DashboardLayout from '@/dashboard/dashboard-layout'
 
 import AuthLayout from './auth/auth-layout'

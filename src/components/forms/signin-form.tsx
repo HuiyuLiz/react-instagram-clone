@@ -4,7 +4,6 @@ import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import * as z from 'zod'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -16,27 +15,22 @@ import {
   FormMessage
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-
-const signinformSchema = z.object({
-  email: z.string().email({ message: 'Enter a valid email address' }),
-  password: z
-    .string()
-    .min(8, { message: 'Password must be at least 8 characters' })
-})
-
-type UserFormValue = z.infer<typeof signinformSchema>
+import {
+  type SignInFormValue,
+  signinformSchema
+} from '@/lib/appwrite/auth-service.type'
 
 export default function SigninForm() {
   const [loading, setLoading] = useState(false)
   const defaultValues = {
     email: ''
   }
-  const form = useForm<UserFormValue>({
+  const form = useForm<SignInFormValue>({
     resolver: zodResolver(signinformSchema),
     defaultValues
   })
 
-  const onSubmit = async (data: UserFormValue) => {
+  const onSubmit = async (data: SignInFormValue) => {
     setLoading(true)
     console.log(data)
     setLoading(false)
@@ -105,7 +99,7 @@ export default function SigninForm() {
               className="underline underline-offset-4 hover:text-primary"
             >
               Sign Up
-            </Link>{' '}
+            </Link>
           </p>
         </form>
       </Form>
