@@ -2,7 +2,6 @@ import { Outlet } from 'react-router-dom'
 
 import Header from '@/components/shared/header'
 import Sidebar from '@/components/shared/sidebar'
-import { Toaster } from '@/components/ui/toaster'
 
 const DashboardLayout = () => {
   return (
@@ -16,7 +15,6 @@ const DashboardLayout = () => {
           </div>
         </div>
       </div>
-      <Toaster />
     </>
   )
 }

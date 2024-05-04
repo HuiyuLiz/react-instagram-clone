@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 
@@ -16,17 +15,28 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { useToast } from '@/components/ui/use-toast'
-import { createUserAccount } from '@/lib/appwrite/auth-service'
 import {
-  type SignUpFormValue,
-  signupformSchema
-} from '@/lib/appwrite/auth-service.type'
+  useCreateUserAccount,
+  useSignInAccount
+} from '@/lib/tanstack-query/auth-query'
+import { type SignUpFormValue, signupformSchema } from '@/lib/validation'
 
 export default function SignupForm() {
+  const navigate = useNavigate()
+
+  const { mutateAsync: createUserAccount, isPending: isCreateUserAccount } =
+    useCreateUserAccount()
+
+  const { mutateAsync: signInAccount, isPending: isSignInAccount } =
+    useSignInAccount()
+
   const { toast } = useToast()
-  const [loading] = useState(false)
+
   const defaultValues = {
-    email: ''
+    name: '',
+    username: '',
+    email: '',
+    password: ''
   }
   const form = useForm<SignUpFormValue>({
     resolver: zodResolver(signupformSchema),
@@ -38,7 +48,23 @@ export default function SignupForm() {
 
     if (newUser === undefined || newUser === null) {
       toast({ title: 'Sign up failed. Please try again.' })
+      return
     }
+
+    const loggedIn = await signInAccount({
+      email: data.email,
+      password: data.password
+    })
+
+    if (loggedIn === undefined || loggedIn === null) {
+      toast({ title: 'Please login your account.' })
+
+      navigate('/sign-in')
+
+      return
+    }
+
+    console.log('success')
   }
 
   return (
@@ -66,7 +92,7 @@ export default function SignupForm() {
                   <Input
                     type="string"
                     placeholder="Enter your name..."
-                    disabled={loading}
+                    disabled={isCreateUserAccount}
                     {...field}
                   />
                 </FormControl>
@@ -84,7 +110,7 @@ export default function SignupForm() {
                   <Input
                     type="string"
                     placeholder="Enter your User Name..."
-                    disabled={loading}
+                    disabled={isCreateUserAccount}
                     {...field}
                   />
                 </FormControl>
@@ -102,7 +128,7 @@ export default function SignupForm() {
                   <Input
                     type="email"
                     placeholder="Enter your email..."
-                    disabled={loading}
+                    disabled={isCreateUserAccount}
                     {...field}
                   />
                 </FormControl>
@@ -120,7 +146,7 @@ export default function SignupForm() {
                   <Input
                     type="password"
                     placeholder="Enter your password..."
-                    disabled={loading}
+                    disabled={isCreateUserAccount}
                     {...field}
                   />
                 </FormControl>
@@ -129,8 +155,12 @@ export default function SignupForm() {
             )}
           />
 
-          <Button disabled={loading} className="ml-auto w-full" type="submit">
-            {loading ? 'Loading...' : 'Sign Up'}
+          <Button
+            disabled={isCreateUserAccount || isSignInAccount}
+            className="ml-auto w-full"
+            type="submit"
+          >
+            {isCreateUserAccount || isSignInAccount ? 'Loading...' : 'Sign Up'}
           </Button>
 
           <p className="px-8 py-2 text-center text-sm text-muted-foreground">
