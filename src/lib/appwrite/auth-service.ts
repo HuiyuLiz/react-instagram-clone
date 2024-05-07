@@ -1,4 +1,4 @@
-import { ID } from 'appwrite'
+import { ID, Query } from 'appwrite'
 
 import { type NewUser, type SaveUserParams, type SignInParams } from '../type'
 import { account, appwriteConfig, avatars, databases } from './config'
@@ -50,6 +50,37 @@ export const signinAccount = async (user: SignInParams) => {
   try {
     const loggedIn = await account.createEmailPasswordSession(email, password)
     return loggedIn
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const getCurrentAccount = async () => {
+  try {
+    const currentAccount = await account.get()
+    return currentAccount
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const getCurrentUser = async () => {
+  try {
+    const currentAccount = await getCurrentAccount()
+
+    if (currentAccount === undefined || currentAccount === null)
+      throw Error('Failed to get account')
+
+    const currentUser = await databases.listDocuments(
+      appwriteConfig.DATABASE_ID,
+      appwriteConfig.COLLECTION_USERS_ID,
+      [Query.equal('accountId', currentAccount.$id)]
+    )
+
+    if (currentUser === undefined || currentAccount === null)
+      throw Error('Failed to get user')
+
+    return currentUser.documents[0]
   } catch (error) {
     console.log(error)
   }

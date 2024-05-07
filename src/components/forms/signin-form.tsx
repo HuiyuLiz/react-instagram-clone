@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 
@@ -15,12 +14,26 @@ import {
   FormMessage
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { useToast } from '@/components/ui/use-toast'
+import { useAuthContext } from '@/context/auth-context'
+import { useSignInAccount } from '@/lib/tanstack-query/auth-query'
 import { type SignInFormValue, signinformSchema } from '@/lib/validation'
 
 export default function SigninForm() {
-  const [loading, setLoading] = useState(false)
+  const navigate = useNavigate()
+
+  const { checkAuth } = useAuthContext()
+
+  const { mutateAsync: signInAccount, isPending: isSignInAccount } =
+    useSignInAccount()
+
+  const { toast } = useToast()
+
+  const disabledStatus = isSignInAccount
+
   const defaultValues = {
-    email: ''
+    email: '',
+    password: ''
   }
   const form = useForm<SignInFormValue>({
     resolver: zodResolver(signinformSchema),
@@ -28,9 +41,28 @@ export default function SigninForm() {
   })
 
   const onSubmit = async (data: SignInFormValue) => {
-    setLoading(true)
-    console.log(data)
-    setLoading(false)
+    try {
+      const session = await signInAccount({
+        email: data.email,
+        password: data.password
+      })
+
+      if (session === undefined || session === null) {
+        toast({ title: 'Please check the email and password.' })
+        return
+      }
+
+      const isLoggedIn = await checkAuth()
+
+      if (isLoggedIn !== undefined && isLoggedIn !== null) {
+        form.reset()
+        navigate('/')
+      } else {
+        return toast({ title: 'Login failed. Please try again.' })
+      }
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (
@@ -58,7 +90,7 @@ export default function SigninForm() {
                   <Input
                     type="email"
                     placeholder="Enter your email..."
-                    disabled={loading}
+                    disabled={disabledStatus}
                     {...field}
                   />
                 </FormControl>
@@ -76,7 +108,7 @@ export default function SigninForm() {
                   <Input
                     type="password"
                     placeholder="Enter your password..."
-                    disabled={loading}
+                    disabled={disabledStatus}
                     {...field}
                   />
                 </FormControl>
@@ -85,8 +117,12 @@ export default function SigninForm() {
             )}
           />
 
-          <Button disabled={loading} className="ml-auto w-full" type="submit">
-            {loading ? 'Loading...' : 'Sign In'}
+          <Button
+            disabled={disabledStatus}
+            className="ml-auto w-full"
+            type="submit"
+          >
+            {disabledStatus ? 'Loading...' : 'Sign In'}
           </Button>
 
           <p className="px-8 py-2 text-center text-sm text-muted-foreground">

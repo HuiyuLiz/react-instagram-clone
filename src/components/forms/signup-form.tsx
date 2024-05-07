@@ -15,6 +15,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { useToast } from '@/components/ui/use-toast'
+import { useAuthContext } from '@/context/auth-context'
 import {
   useCreateUserAccount,
   useSignInAccount
@@ -24,6 +25,8 @@ import { type SignUpFormValue, signupformSchema } from '@/lib/validation'
 export default function SignupForm() {
   const navigate = useNavigate()
 
+  const { checkAuth } = useAuthContext()
+
   const { mutateAsync: createUserAccount, isPending: isCreateUserAccount } =
     useCreateUserAccount()
 
@@ -31,6 +34,8 @@ export default function SignupForm() {
     useSignInAccount()
 
   const { toast } = useToast()
+
+  const disabledStatus = isCreateUserAccount || isSignInAccount
 
   const defaultValues = {
     name: '',
@@ -44,27 +49,36 @@ export default function SignupForm() {
   })
 
   const onSubmit = async (data: SignUpFormValue) => {
-    const newUser = await createUserAccount(data)
+    try {
+      const newUser = await createUserAccount(data)
 
-    if (newUser === undefined || newUser === null) {
-      toast({ title: 'Sign up failed. Please try again.' })
-      return
+      if (newUser === undefined || newUser === null) {
+        toast({ title: 'Sign up failed. Please try again.' })
+        return
+      }
+
+      const session = await signInAccount({
+        email: data.email,
+        password: data.password
+      })
+
+      if (session === undefined || session === null) {
+        toast({ title: 'Please login your account.' })
+        navigate('/sign-in')
+        return
+      }
+
+      const isLoggedIn = await checkAuth()
+
+      if (isLoggedIn !== undefined && isLoggedIn !== null) {
+        form.reset()
+        navigate('/')
+      } else {
+        return toast({ title: 'Login failed. Please try again.' })
+      }
+    } catch (error) {
+      console.log(error)
     }
-
-    const loggedIn = await signInAccount({
-      email: data.email,
-      password: data.password
-    })
-
-    if (loggedIn === undefined || loggedIn === null) {
-      toast({ title: 'Please login your account.' })
-
-      navigate('/sign-in')
-
-      return
-    }
-
-    console.log('success')
   }
 
   return (
@@ -92,7 +106,7 @@ export default function SignupForm() {
                   <Input
                     type="string"
                     placeholder="Enter your name..."
-                    disabled={isCreateUserAccount}
+                    disabled={disabledStatus}
                     {...field}
                   />
                 </FormControl>
@@ -110,7 +124,7 @@ export default function SignupForm() {
                   <Input
                     type="string"
                     placeholder="Enter your User Name..."
-                    disabled={isCreateUserAccount}
+                    disabled={disabledStatus}
                     {...field}
                   />
                 </FormControl>
@@ -128,7 +142,7 @@ export default function SignupForm() {
                   <Input
                     type="email"
                     placeholder="Enter your email..."
-                    disabled={isCreateUserAccount}
+                    disabled={disabledStatus}
                     {...field}
                   />
                 </FormControl>
@@ -146,7 +160,7 @@ export default function SignupForm() {
                   <Input
                     type="password"
                     placeholder="Enter your password..."
-                    disabled={isCreateUserAccount}
+                    disabled={disabledStatus}
                     {...field}
                   />
                 </FormControl>
@@ -156,11 +170,11 @@ export default function SignupForm() {
           />
 
           <Button
-            disabled={isCreateUserAccount || isSignInAccount}
+            disabled={disabledStatus}
             className="ml-auto w-full"
             type="submit"
           >
-            {isCreateUserAccount || isSignInAccount ? 'Loading...' : 'Sign Up'}
+            {disabledStatus ? 'Loading...' : 'Sign Up'}
           </Button>
 
           <p className="px-8 py-2 text-center text-sm text-muted-foreground">

@@ -1,40 +1,54 @@
-import { createBrowserRouter } from 'react-router-dom'
+import { Outlet, createBrowserRouter } from 'react-router-dom'
 
 import SigninForm from '@/components/forms/signin-form'
 import SignupForm from '@/components/forms/signup-form'
+import { Toaster } from '@/components/ui/toaster'
 import DashboardLayout from '@/dashboard/dashboard-layout'
 
 import AuthLayout from './auth/auth-layout'
+import { AuthProvider } from './context/auth-context'
 import Home from './dashboard/pages/home'
+
+const AuthProviderLayout = () => (
+  <AuthProvider>
+    <Outlet />
+    <Toaster />
+  </AuthProvider>
+)
 
 const router = createBrowserRouter([
   {
-    path: '/',
-    element: <DashboardLayout />,
+    element: <AuthProviderLayout />,
     children: [
       {
-        index: true,
-        element: <Home />
-      }
-    ]
-  },
-  {
-    path: '/sign-in',
-    element: <AuthLayout />,
-    children: [
+        path: '/',
+        element: <DashboardLayout />,
+        children: [
+          {
+            index: true,
+            element: <Home />
+          }
+        ]
+      },
       {
-        index: true,
-        element: <SigninForm />
-      }
-    ]
-  },
-  {
-    path: '/sign-up',
-    element: <AuthLayout />,
-    children: [
+        path: '/sign-in',
+        element: <AuthLayout />,
+        children: [
+          {
+            index: true,
+            element: <SigninForm />
+          }
+        ]
+      },
       {
-        index: true,
-        element: <SignupForm />
+        path: '/sign-up',
+        element: <AuthLayout />,
+        children: [
+          {
+            index: true,
+            element: <SignupForm />
+          }
+        ]
       }
     ]
   }
