@@ -1,6 +1,10 @@
 import { useMutation } from '@tanstack/react-query'
 
-import { createUserAccount, signinAccount } from '@/lib/appwrite/auth-service'
+import {
+  createUserAccount,
+  signOutAccount,
+  signinAccount
+} from '@/lib/appwrite/auth-service'
 
 import { type NewUser, type SignInParams } from '../type'
 
@@ -13,5 +17,11 @@ export const useCreateUserAccount = () => {
 export const useSignInAccount = () => {
   return useMutation({
     mutationFn: async (user: SignInParams) => await signinAccount(user)
+  })
+}
+
+export const useSignOutAccount = () => {
+  return useMutation({
+    mutationFn: signOutAccount
   })
 }

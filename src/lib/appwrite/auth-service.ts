@@ -85,3 +85,12 @@ export const getCurrentUser = async () => {
     console.log(error)
   }
 }
+
+export const signOutAccount = async (): Promise<undefined> => {
+  try {
+    await account.deleteSession('current')
+    return undefined
+  } catch (error) {
+    console.log(error)
+  }
+}

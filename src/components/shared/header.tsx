@@ -1,6 +1,10 @@
+import { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+
 import HeartIcon from '@/components/icon/hearticon'
 import MessageCircleIcon from '@/components/icon/messagecircleicon'
 import SearchIcon from '@/components/icon/searchicon'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -11,8 +15,20 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 import { Input } from '@/components/ui/input'
+import { useAuthContext } from '@/context/auth-context'
+import { useSignOutAccount } from '@/lib/tanstack-query/auth-query'
 
 const Header = () => {
+  const { user } = useAuthContext()
+  const navigate = useNavigate()
+
+  const { mutateAsync: signOut, isSuccess } = useSignOutAccount()
+
+  useEffect(() => {
+    if (isSuccess) {
+      navigate(0)
+    }
+  }, [isSuccess, navigate])
   return (
     <header className="flex h-14 items-center justify-between border-b bg-white px-4 dark:border-gray-800 dark:bg-gray-950">
       <div className="relative flex w-full max-w-md items-center">
@@ -34,27 +50,30 @@ const Header = () => {
         </Button>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button className="rounded-full" size="icon" variant="ghost">
-              <img
-                alt="Avatar"
-                className="rounded-full"
-                height={32}
-                src="/placeholder.svg"
-                style={{
-                  aspectRatio: '32/32',
-                  objectFit: 'cover'
-                }}
-                width={32}
-              />
-              <span className="sr-only">Profile</span>
-            </Button>
+            <Avatar className="cursor-pointer">
+              <AvatarImage src={user.imageUrl} />
+              <AvatarFallback></AvatarFallback>
+            </Avatar>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Profile</DropdownMenuItem>
-            <DropdownMenuItem>Settings</DropdownMenuItem>
-            <DropdownMenuItem>Logout</DropdownMenuItem>
+            <DropdownMenuItem
+              className="cursor-pointer"
+              onClick={() => {
+                navigate('/profile/' + user.id)
+              }}
+            >
+              Profile
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              className="cursor-pointer"
+              onClick={() => {
+                void signOut()
+              }}
+            >
+              Logout
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
