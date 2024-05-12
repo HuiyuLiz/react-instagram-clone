@@ -26,3 +26,16 @@ export interface SignInParams {
   email: string
   password: string
 }
+
+export interface NewPost {
+  userId: string
+  caption: string
+  file: File[]
+  location?: string
+  tags?: Tag[]
+}
+
+export interface Tag {
+  id: string
+  text: string
+}

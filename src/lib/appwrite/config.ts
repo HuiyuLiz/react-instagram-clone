@@ -19,5 +19,5 @@ client
 
 export const account: Account = new Account(client)
 export const databases: Databases = new Databases(client)
-export const storages: Storage = new Storage(client)
+export const storage: Storage = new Storage(client)
 export const avatars: Avatars = new Avatars(client)

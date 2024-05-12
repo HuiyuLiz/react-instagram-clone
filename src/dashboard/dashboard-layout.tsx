@@ -6,11 +6,11 @@ import Sidebar from '@/components/shared/sidebar'
 const DashboardLayout = () => {
   return (
     <>
-      <div className="grid min-h-screen w-full grid-cols-[280px_1fr]">
+      <div className="grid min-h-screen w-full lg:grid-cols-[280px_1fr]">
         <Sidebar></Sidebar>
-        <div className="flex flex-col">
+        <div className="flex flex-col space-y-8">
           <Header></Header>
-          <div className="container mx-auto grid grid-cols-[1fr_300px] gap-8 py-8">
+          <div className="container">
             <Outlet />
           </div>
         </div>

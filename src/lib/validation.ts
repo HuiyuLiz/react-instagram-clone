@@ -21,3 +21,23 @@ export const signinformSchema = z.object({
 })
 
 export type SignInFormValue = z.infer<typeof signinformSchema>
+
+export const postFormSchema = z.object({
+  caption: z
+    .string()
+    .min(1, { message: 'Minimum 1 characters.' })
+    .max(2200, { message: 'Maximum 2,200 caracters' }),
+  file: z.custom<File[]>(),
+  location: z
+    .string()
+    .min(1, { message: 'This field is required' })
+    .max(1000, { message: 'Maximum 1000 characters.' }),
+  tags: z.array(
+    z.object({
+      id: z.string(),
+      text: z.string()
+    })
+  )
+})
+
+export type PostFormValue = z.infer<typeof postFormSchema>
