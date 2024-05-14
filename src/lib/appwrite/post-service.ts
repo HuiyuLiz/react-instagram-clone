@@ -1,4 +1,4 @@
-import { ID } from 'appwrite'
+import { ID, Query } from 'appwrite'
 
 import { type NewPost } from '../type'
 import { isValueDefined } from '../utils'
@@ -72,9 +72,6 @@ export function getFilePreview(fileId: string) {
       0, // height, ignored when 0
       'center', // crop center
       '90', // slight compression
-      5, // border width
-      'CDCA30', // border color
-      15, // border radius
       1, // full opacity
       0, // no rotation
       'FFFFFF', // background color
@@ -94,6 +91,77 @@ export async function deleteFile(fileId: string) {
     await storage.deleteFile(appwriteConfig.STORAGE_MEDIA_ID, fileId)
 
     return { status: 'ok' }
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export async function getRecentPosts() {
+  try {
+    const posts = await databases.listDocuments(
+      appwriteConfig.DATABASE_ID,
+      appwriteConfig.COLLECTION_POSTS_ID,
+      [Query.orderDesc('$createdAt'), Query.limit(20)]
+    )
+
+    if (!isValueDefined(posts)) throw Error('Failed to get recent posts')
+
+    return posts
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export async function likePost(postId: string, likesArray: string[]) {
+  try {
+    const updatedPost = await databases.updateDocument(
+      appwriteConfig.DATABASE_ID,
+      appwriteConfig.COLLECTION_POSTS_ID,
+      postId,
+      {
+        likes: likesArray
+      }
+    )
+
+    if (!isValueDefined(updatedPost)) throw Error('Failed to update post')
+
+    return updatedPost
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export async function savePost(userId: string, postId: string) {
+  try {
+    const updatedPost = await databases.createDocument(
+      appwriteConfig.DATABASE_ID,
+      appwriteConfig.COLLECTION_SAVES_ID,
+      ID.unique(),
+      {
+        user: userId,
+        post: postId
+      }
+    )
+
+    if (!isValueDefined(updatedPost)) throw Error('Failed to save post')
+
+    return updatedPost
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export async function deleteSavedPost(savedRecordId: string) {
+  try {
+    const statusCode = await databases.deleteDocument(
+      appwriteConfig.DATABASE_ID,
+      appwriteConfig.COLLECTION_SAVES_ID,
+      savedRecordId
+    )
+
+    if (!isValueDefined(statusCode)) throw Error('Failed to delete saved post')
+
+    return { status: 'Ok' }
   } catch (error) {
     console.log(error)
   }

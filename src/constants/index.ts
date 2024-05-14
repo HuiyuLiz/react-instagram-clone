@@ -1,6 +1,6 @@
-import CompassIcon from '@/components/icon/compassIcon'
+import BookMarkIcon from '@/components/icon/bookmarkicon'
 import HomeIcon from '@/components/icon/homeicon'
-import PlusIcon from '@/components/icon/plusIcon'
+import PlusIcon from '@/components/icon/plusicon'
 import SearchIcon from '@/components/icon/searchicon'
 import UserIcon from '@/components/icon/usericon'
 
@@ -21,7 +21,7 @@ export const sidebarLinks = [
     label: 'People'
   },
   {
-    icon: CompassIcon,
+    icon: BookMarkIcon,
     route: '/saved',
     label: 'Saved'
   },

@@ -1,7 +1,8 @@
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 
 import {
   createUserAccount,
+  getCurrentUser,
   signOutAccount,
   signinAccount
 } from '@/lib/appwrite/auth-service'
@@ -23,5 +24,12 @@ export const useSignInAccount = () => {
 export const useSignOutAccount = () => {
   return useMutation({
     mutationFn: signOutAccount
+  })
+}
+
+export const useGetCurrentUser = () => {
+  return useQuery({
+    queryKey: ['getCurrentUser'],
+    queryFn: getCurrentUser
   })
 }
