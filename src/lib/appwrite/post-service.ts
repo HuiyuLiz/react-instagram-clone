@@ -1,6 +1,6 @@
 import { ID, Query } from 'appwrite'
 
-import { type NewPost } from '../type'
+import { type NewPost, type UpdatePost } from '../type'
 import { isValueDefined } from '../utils'
 import { appwriteConfig, databases, storage } from './config'
 
@@ -49,6 +49,91 @@ export async function createPost(post: NewPost) {
   }
 }
 
+export async function updatePost(post: UpdatePost) {
+  const hasFileToUpdate = post.file.length > 0
+
+  try {
+    let image = {
+      imageUrl: post.imageUrl,
+      imageId: post.imageId
+    }
+
+    if (hasFileToUpdate) {
+      // Upload new file to appwrite storage
+      const uploadedFile = await uploadFile(post.file[0])
+      if (!isValueDefined(uploadedFile)) throw Error('Failed to upload file')
+
+      // Get new file url
+      const fileUrl = getFilePreview(uploadedFile.$id)
+      if (!isValueDefined(fileUrl)) {
+        await deleteFile(uploadedFile.$id)
+        throw Error('Failed to upload file')
+      }
+
+      image = { ...image, imageUrl: fileUrl, imageId: uploadedFile.$id }
+    }
+
+    // Convert tags into array
+    const tags = Array.isArray(post.tags)
+      ? post.tags.map((tag: { id: string; text: string }) => tag.text)
+      : []
+
+    //  Update post
+    const updatedPost = await databases.updateDocument(
+      appwriteConfig.DATABASE_ID,
+      appwriteConfig.COLLECTION_POSTS_ID,
+      post.postId,
+      {
+        caption: post.caption,
+        imageUrl: image.imageUrl,
+        imageId: image.imageId,
+        location: post.location,
+        tags
+      }
+    )
+
+    // Failed to update
+    if (!isValueDefined(updatedPost)) {
+      // Delete new file that has been recently uploaded
+      if (hasFileToUpdate) {
+        await deleteFile(image.imageId)
+      }
+
+      // If no new file uploaded, just throw error
+      throw Error('Failed to update post')
+    }
+
+    // Safely delete old file after successful update
+    if (hasFileToUpdate) {
+      await deleteFile(post.imageId)
+    }
+
+    return updatedPost
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export async function deletePost(postId?: string, imageId?: string) {
+  if (!isValueDefined(postId) || !isValueDefined(imageId)) return
+
+  try {
+    const statusCode = await databases.deleteDocument(
+      appwriteConfig.DATABASE_ID,
+      appwriteConfig.COLLECTION_POSTS_ID,
+      postId
+    )
+
+    if (!isValueDefined(statusCode)) throw Error('Failed to delete post')
+
+    await deleteFile(imageId)
+
+    return { status: 'Ok' }
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 export async function uploadFile(file: File) {
   try {
     const uploadedFile = await storage.createFile(
@@ -67,15 +152,11 @@ export function getFilePreview(fileId: string) {
   try {
     const fileUrl = storage.getFilePreview(
       appwriteConfig.STORAGE_MEDIA_ID, // bucket ID
-      fileId, // file ID
-      1800, // width, will be resized using this value.
-      0, // height, ignored when 0
-      'center', // crop center
-      '90', // slight compression
-      1, // full opacity
-      0, // no rotation
-      'FFFFFF', // background color
-      'jpg' // output jpg format
+      fileId,
+      2000,
+      2000,
+      'top',
+      100
     )
 
     if (!isValueDefined(fileUrl)) throw Error('Failed to get file preview')
@@ -162,6 +243,24 @@ export async function deleteSavedPost(savedRecordId: string) {
     if (!isValueDefined(statusCode)) throw Error('Failed to delete saved post')
 
     return { status: 'Ok' }
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export async function getPostById(postId?: string) {
+  if (!isValueDefined(postId)) throw Error('Post ID is required')
+
+  try {
+    const post = await databases.getDocument(
+      appwriteConfig.DATABASE_ID,
+      appwriteConfig.COLLECTION_POSTS_ID,
+      postId
+    )
+
+    if (!isValueDefined(post)) throw Error('Failed to get post by ID')
+
+    return post
   } catch (error) {
     console.log(error)
   }

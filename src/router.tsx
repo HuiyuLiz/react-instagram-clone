@@ -7,7 +7,7 @@ import DashboardLayout from '@/dashboard/dashboard-layout'
 
 import AuthLayout from './auth/auth-layout'
 import { AuthProvider } from './context/auth-context'
-import { CreatePost, Home } from './dashboard/pages'
+import { CreatePost, EditPost, Home, Post } from './dashboard/pages'
 
 const AuthProviderLayout = () => (
   <AuthProvider>
@@ -30,11 +30,15 @@ const router = createBrowserRouter([
           },
           {
             path: '/posts/:id',
-            element: <Home />
+            element: <Post />
           },
           {
             path: '/create-post',
             element: <CreatePost />
+          },
+          {
+            path: '/update-post/:id',
+            element: <EditPost />
           }
         ]
       },

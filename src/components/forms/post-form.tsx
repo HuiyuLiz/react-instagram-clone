@@ -20,30 +20,38 @@ import {
 import { Input } from '@/components/ui/input'
 import { useToast } from '@/components/ui/use-toast'
 import { useAuthContext } from '@/context/auth-context'
-import { useCreatePost } from '@/lib/tanstack-query/post-query'
+import { useCreatePost, useUpdatePost } from '@/lib/tanstack-query/post-query'
 import { isValueDefined } from '@/lib/utils'
 import { type PostFormValue, postFormSchema } from '@/lib/validation'
 
 interface PostFormProps {
   post?: Models.Document
+  action: 'update' | 'create'
 }
 
-export default function PostForm({ post }: PostFormProps) {
+export default function PostForm({ post, action }: PostFormProps) {
   const navigate = useNavigate()
 
   const { mutateAsync: createPost, isPending: isCreatePost } = useCreatePost()
+
+  const { mutateAsync: updatePost, isPending: isUpdatePost } = useUpdatePost()
 
   const { user } = useAuthContext()
 
   const { toast } = useToast()
 
-  const [tags, setTags] = useState<Tag[]>([])
+  const initTags: Tag[] =
+    post !== undefined
+      ? post.tags.map((tag: string) => ({ id: tag, text: tag }))
+      : []
+
+  const [tags, setTags] = useState<Tag[]>(initTags)
 
   const defaultValues = {
     caption: post !== undefined ? post?.caption : '',
     file: [],
     location: post !== undefined ? post.location : '',
-    tags: post !== undefined ? post.tags : []
+    tags: initTags
   }
 
   const form = useForm<PostFormValue>({
@@ -54,7 +62,29 @@ export default function PostForm({ post }: PostFormProps) {
   const { setValue } = form
 
   const onSubmit = async (data: PostFormValue) => {
+    console.log(data)
     try {
+      // ACTION = UPDATE
+      if (isValueDefined(post) && action === 'update') {
+        const updatedPost = await updatePost({
+          ...data,
+          postId: post.$id,
+          imageId: post.imageId,
+          imageUrl: post.imageUrl
+        })
+
+        if (!isValueDefined(updatedPost)) {
+          toast({
+            title: `${action} post failed. Please try again.`
+          })
+        } else {
+          toast({ title: 'Post updated successfully.' })
+          navigate(`/posts/${post.$id}`)
+          return
+        }
+      }
+
+      // ACTION = CREATE
       const newPost = await createPost({
         ...data,
         userId: user.id
@@ -148,11 +178,17 @@ export default function PostForm({ post }: PostFormProps) {
           />
 
           <div className="space-x-2">
-            <Button type="submit" disabled={isCreatePost}>
+            <Button type="submit" disabled={isCreatePost || isUpdatePost}>
               Submit
             </Button>
 
-            <Button variant={'outline'} type="submit">
+            <Button
+              variant={'outline'}
+              type="submit"
+              onClick={() => {
+                navigate('/')
+              }}
+            >
               Cancel
             </Button>
           </div>

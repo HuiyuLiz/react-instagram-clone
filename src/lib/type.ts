@@ -35,6 +35,16 @@ export interface NewPost {
   tags?: Tag[]
 }
 
+export interface UpdatePost {
+  postId: string
+  caption: string
+  imageId: string
+  imageUrl: URL
+  file: File[]
+  location?: string
+  tags?: Tag[]
+}
+
 export interface Tag {
   id: string
   text: string
