@@ -14,6 +14,7 @@ import BookMarkIcon from '../icon/bookmarkicon'
 import HeartIcon from '../icon/hearticon'
 import SolidBookMarkIcon from '../icon/solidbookmarkicon'
 import SolidHeartIcon from '../icon/solidhearticon'
+import Loader from './loader'
 
 interface PostStatusProps {
   post: Models.Document
@@ -29,8 +30,9 @@ const PostStatus = ({ post, userId }: PostStatusProps) => {
   const [isSaved, setIsSaved] = useState(false)
 
   const { mutate: likePost } = useLikePost()
-  const { mutate: savePost } = useSavePost()
-  const { mutate: deleteSavePost } = useDeleteSavedPost()
+  const { mutate: savePost, isPending: isSavingPost } = useSavePost()
+  const { mutate: deleteSavePost, isPending: isDeletingPost } =
+    useDeleteSavedPost()
 
   const { data: currentUser } = useGetCurrentUser()
 
@@ -93,16 +95,22 @@ const PostStatus = ({ post, userId }: PostStatusProps) => {
         )}
         <p className="small-medium lg:base-medium">{likes.length}</p>
       </div>
-      <div
-        className="cursor-pointer p-2 pr-0"
-        onClick={(e: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
-          handleSavePost(e)
-        }}
-      >
-        {isSaved ? (
-          <SolidBookMarkIcon className="h-5 w-5"></SolidBookMarkIcon>
+
+      <div className="cursor-pointer p-2 pr-0">
+        {isSavingPost || isDeletingPost ? (
+          <Loader></Loader>
         ) : (
-          <BookMarkIcon className="h-5 w-5"></BookMarkIcon>
+          <div
+            onClick={(e: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
+              handleSavePost(e)
+            }}
+          >
+            {isSaved ? (
+              <SolidBookMarkIcon className="h-5 w-5"></SolidBookMarkIcon>
+            ) : (
+              <BookMarkIcon className="h-5 w-5"></BookMarkIcon>
+            )}
+          </div>
         )}
       </div>
     </div>

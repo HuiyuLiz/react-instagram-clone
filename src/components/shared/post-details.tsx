@@ -32,7 +32,9 @@ const PostDetails = ({ post }: PostDetailsProps) => {
             </div>
           </div>
         </div>
-        <div
+
+        <Link
+          to={`/update-post/${post.$id}`}
           className={
             user.id !== post.creator.$id
               ? 'hidden'
@@ -40,7 +42,7 @@ const PostDetails = ({ post }: PostDetailsProps) => {
           }
         >
           <PencilIcon className="h-5 w-5"></PencilIcon>
-        </div>
+        </Link>
       </div>
       <div className="text-sm">
         <p className="font-bold">{post.caption}</p>
