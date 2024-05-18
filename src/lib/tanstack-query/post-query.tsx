@@ -1,17 +1,25 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient
+} from '@tanstack/react-query'
 
 import {
   createPost,
   deletePost,
   deleteSavedPost,
+  getInfinitePosts,
   getPostById,
   getRecentPosts,
   likePost,
   savePost,
+  searchPosts,
   updatePost
 } from '@/lib/appwrite/post-service'
 
 import { type NewPost, type UpdatePost } from '../type'
+import { isValueDefined } from '../utils'
 
 export const useCreatePost = () => {
   const queryClient = useQueryClient()
@@ -135,5 +143,30 @@ export const useDeletePost = () => {
         queryKey: ['getRecentPosts']
       })
     }
+  })
+}
+
+export const useGetPosts = () => {
+  return useInfiniteQuery({
+    queryKey: ['getInfinitePosts'],
+    queryFn: getInfinitePosts,
+    getNextPageParam: (lastPage: { documents: Array<{ $id: string }> }) => {
+      // If there's no data, there are no more pages.
+      if (isValueDefined(lastPage) && lastPage.documents.length === 0) {
+        return null
+      }
+
+      // Use the $id of the last document as the cursor.
+      const lastId = lastPage.documents[lastPage.documents.length - 1].$id
+      return lastId
+    }
+  })
+}
+
+export const useSearchPosts = (searchTerm: string) => {
+  return useQuery({
+    queryKey: ['searchPosts', searchTerm],
+    queryFn: async () => await searchPosts(searchTerm),
+    enabled: !(searchTerm.length === 0)
   })
 }

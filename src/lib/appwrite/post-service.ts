@@ -265,3 +265,42 @@ export async function getPostById(postId?: string) {
     console.log(error)
   }
 }
+
+export async function searchPosts(searchTerm: string) {
+  try {
+    const posts = await databases.listDocuments(
+      appwriteConfig.DATABASE_ID,
+      appwriteConfig.COLLECTION_POSTS_ID,
+      [Query.search('caption', searchTerm)]
+    )
+
+    if (!isValueDefined(posts)) throw Error('Failed to search posts')
+
+    return posts
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export async function getInfinitePosts({ pageParam }: { pageParam: number }) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const queries: any[] = [Query.orderDesc('$updatedAt'), Query.limit(9)]
+
+  if (isValueDefined(pageParam)) {
+    queries.push(Query.cursorAfter(pageParam.toString()))
+  }
+
+  try {
+    const posts = await databases.listDocuments(
+      appwriteConfig.DATABASE_ID,
+      appwriteConfig.COLLECTION_POSTS_ID,
+      queries
+    )
+
+    if (!isValueDefined(posts)) throw Error('Failed to get posts')
+
+    return posts
+  } catch (error) {
+    console.log(error)
+  }
+}

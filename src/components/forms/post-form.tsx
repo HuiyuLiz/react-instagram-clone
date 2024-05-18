@@ -62,7 +62,6 @@ export default function PostForm({ post, action }: PostFormProps) {
   const { setValue } = form
 
   const onSubmit = async (data: PostFormValue) => {
-    console.log(data)
     try {
       // ACTION = UPDATE
       if (isValueDefined(post) && action === 'update') {
