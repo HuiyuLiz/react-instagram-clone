@@ -8,7 +8,7 @@ interface GridPostListProps {
 
 const GridPostList = ({ posts }: GridPostListProps) => {
   return (
-    <div className="grid gap-4 lg:grid-cols-3">
+    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
       {posts?.map((post: Models.Document) => (
         <div key={post.$id}>
           <PostCard post={post}></PostCard>

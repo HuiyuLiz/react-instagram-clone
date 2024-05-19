@@ -1,8 +1,8 @@
+/* eslint-disable react/jsx-max-props-per-line */
 import { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 import HeartIcon from '@/components/icon/hearticon'
-import MessageCircleIcon from '@/components/icon/messagecircleicon'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import {
@@ -30,13 +30,11 @@ const Header = () => {
   return (
     <header className="flex h-14 items-center justify-between border-b bg-white px-4 dark:border-gray-800 dark:bg-gray-950">
       <div className="ml-auto flex items-center gap-4">
-        <Button className="rounded-full" size="icon" variant="ghost">
-          <HeartIcon className="h-5 w-5" />
-          <span className="sr-only">Notifications</span>
-        </Button>
-        <Button className="rounded-full" size="icon" variant="ghost">
-          <MessageCircleIcon className="h-5 w-5" />
-          <span className="sr-only">Messages</span>
+        <Button variant="ghost" className="rounded-full" size="icon" asChild>
+          <Link to={'/liked'}>
+            <HeartIcon className="h-5 w-5" />
+            <span className="sr-only">Notifications</span>
+          </Link>
         </Button>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

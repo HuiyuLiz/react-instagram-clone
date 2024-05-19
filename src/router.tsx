@@ -12,6 +12,7 @@ import {
   EditPost,
   Explore,
   Home,
+  LikedPosts,
   Post,
   Saved,
   Users
@@ -59,6 +60,10 @@ const router = createBrowserRouter([
           {
             path: '/saved',
             element: <Saved />
+          },
+          {
+            path: '/liked',
+            element: <LikedPosts />
           }
         ]
       },
