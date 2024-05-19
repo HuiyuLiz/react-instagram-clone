@@ -1,6 +1,7 @@
 import { Link, useNavigate, useParams } from 'react-router-dom'
 
 import Loading from '@/components/loader/loading'
+import { Heading } from '@/components/shared/heading'
 import PostContent from '@/components/shared/post-content'
 import PostStatus from '@/components/shared/post-status'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -17,7 +18,7 @@ const Post = () => {
   const { data: post, isPending } = useGetPostById(id)
   const { mutate: deletePost } = useDeletePost()
   if (isPending) return <Loading />
-  if (!isValueDefined(post)) return <div>Post not found.</div>
+  if (!isValueDefined(post)) return <Heading title="Post not found."></Heading>
 
   const handleDeletePost = () => {
     deletePost({ postId: id, imageId: post?.imageId })

@@ -14,7 +14,7 @@ const UserCard = ({ user }: UserCardProps) => {
   return (
     <Card>
       <CardHeader className="flex items-center justify-between space-y-4">
-        <div className="flex items-center gap-3">
+        <div className="flex  flex-col items-center  gap-3 lg:flex-row">
           <Avatar>
             <AvatarImage
               alt="@shadcn"
@@ -22,7 +22,7 @@ const UserCard = ({ user }: UserCardProps) => {
             />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
-          <div>
+          <div className="text-center lg:text-left">
             <h4 className="font-medium"> {user?.name}</h4>
             <div className="text-sm text-gray-500 dark:text-gray-400">
               @{user?.username}

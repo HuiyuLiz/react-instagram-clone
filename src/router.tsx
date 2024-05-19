@@ -10,6 +10,7 @@ import { AuthProvider } from './context/auth-context'
 import {
   CreatePost,
   EditPost,
+  Error,
   Explore,
   Home,
   LikedPosts,
@@ -29,6 +30,7 @@ const AuthProviderLayout = () => (
 const router = createBrowserRouter([
   {
     element: <AuthProviderLayout />,
+    errorElement: <Error />,
     children: [
       {
         path: '/',

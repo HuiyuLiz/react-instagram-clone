@@ -1,5 +1,6 @@
 import { type Models } from 'appwrite'
 
+import ErrorMessage from '@/components/loader/error-message'
 import Loading from '@/components/loader/loading'
 import GridPostList from '@/components/shared/grid-post-list'
 import { Heading } from '@/components/shared/heading'
@@ -25,9 +26,9 @@ const Saved = () => {
       {!isValueDefined(currentUser) ? (
         <Loading />
       ) : (
-        <ul className="flex w-full max-w-5xl justify-center gap-9">
+        <ul className="flex w-full max-w-5xl justify-start gap-9">
           {savePosts.length === 0 ? (
-            <p className="text-light-4">No available posts.</p>
+            <ErrorMessage message="No available posts."></ErrorMessage>
           ) : (
             <GridPostList posts={savePosts} />
           )}

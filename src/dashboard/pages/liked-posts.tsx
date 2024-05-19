@@ -1,3 +1,4 @@
+import ErrorMessage from '@/components/loader/error-message'
 import Loading from '@/components/loader/loading'
 import GridPostList from '@/components/shared/grid-post-list'
 import { Heading } from '@/components/shared/heading'
@@ -14,9 +15,9 @@ const LikedPosts = () => {
       {!isValueDefined(currentUser) ? (
         <Loading />
       ) : (
-        <ul className="flex w-full max-w-5xl justify-center gap-9">
+        <ul className="flex w-full max-w-5xl justify-start gap-9">
           {currentUser.liked.length === 0 ? (
-            <p className="text-light-4">No liked posts.</p>
+            <ErrorMessage message="No liked posts."></ErrorMessage>
           ) : (
             <GridPostList posts={currentUser.liked} />
           )}

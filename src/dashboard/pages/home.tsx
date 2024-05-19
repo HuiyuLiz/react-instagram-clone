@@ -20,14 +20,16 @@ const PostList = () => {
 }
 
 const UserList = () => {
-  const { data: users, isPending: isPendingUsers } = useGetUsers(3)
+  const { data: users, isPending: isPendingUsers } = useGetUsers(4)
   if (isPendingUsers) {
     return <UserCardSkeleton></UserCardSkeleton>
   } else if (isValueDefined(users) && users.documents.length > 0) {
     return (
-      <div className="space-y-4">
+      <div className="flex h-full snap-x snap-proximity gap-4 overflow-x-scroll md:h-auto lg:flex-col">
         {users?.documents.map(user => (
-          <UserCard key={user.$id} user={user}></UserCard>
+          <div className="min-w-[200px] snap-center lg:w-auto" key={user.$id}>
+            <UserCard user={user}></UserCard>
+          </div>
         ))}
       </div>
     )
@@ -40,7 +42,7 @@ const UserList = () => {
 
 const Home = () => {
   return (
-    <div className="grid grid-cols-[1fr_300px] gap-8">
+    <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-[1fr_300px]">
       <PostList></PostList>
       <UserList></UserList>
     </div>
