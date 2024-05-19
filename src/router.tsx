@@ -13,6 +13,7 @@ import {
   Explore,
   Home,
   Post,
+  Saved,
   Users
 } from './dashboard/pages'
 
@@ -54,6 +55,10 @@ const router = createBrowserRouter([
           {
             path: '/all-users',
             element: <Users />
+          },
+          {
+            path: '/saved',
+            element: <Saved />
           }
         ]
       },

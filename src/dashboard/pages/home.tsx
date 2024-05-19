@@ -1,3 +1,4 @@
+import Loading from '@/components/loader/loading'
 import UserCardSkeleton from '@/components/loader/user-card-skeleton'
 import GridPostList from '@/components/shared/grid-post-list'
 import UserCard from '@/components/shared/user-card'
@@ -8,7 +9,7 @@ import { isValueDefined } from '@/lib/utils'
 const PostList = () => {
   const { data: posts, isPending: isPendingPosts } = useGetRecentPosts()
   if (isPendingPosts) {
-    return <div className="text-sm font-bold tracking-tight">Loading...</div>
+    return <Loading></Loading>
   } else if (isValueDefined(posts) && posts.documents.length > 0) {
     return <GridPostList posts={posts.documents} />
   } else {

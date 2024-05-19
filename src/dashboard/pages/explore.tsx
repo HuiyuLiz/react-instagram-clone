@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { useInView } from 'react-intersection-observer'
 
 import SearchIcon from '@/components/icon/searchicon'
+import Loading from '@/components/loader/loading'
 import GridPostList from '@/components/shared/grid-post-list'
 import { Heading } from '@/components/shared/heading'
 import { Input } from '@/components/ui/input'
@@ -20,7 +21,7 @@ const SearchResults = ({
   searchedPosts
 }: SearchResultProps) => {
   if (isSearchFetching) {
-    return <p>Loading...</p>
+    return <Loading />
   } else if (
     isValueDefined(searchedPosts) &&
     searchedPosts.documents.length > 0
@@ -52,7 +53,7 @@ const Explore = () => {
   if (!isValueDefined(posts))
     return (
       <div className="flex-center h-full w-full">
-        <p>Loading...</p>
+        <Loading />
       </div>
     )
 
@@ -94,7 +95,7 @@ const Explore = () => {
 
       {hasNextPage && !isValueDefined(searchTerm) && (
         <div ref={ref} className="mt-10">
-          <p>Loading...</p>
+          <Loading />
         </div>
       )}
     </div>
