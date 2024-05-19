@@ -14,6 +14,7 @@ import {
   Home,
   LikedPosts,
   Post,
+  Profile,
   Saved,
   Users
 } from './dashboard/pages'
@@ -64,6 +65,10 @@ const router = createBrowserRouter([
           {
             path: '/liked',
             element: <LikedPosts />
+          },
+          {
+            path: '/profile/:id/*',
+            element: <Profile />
           }
         ]
       },

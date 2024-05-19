@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom'
+
 import { type Models } from 'appwrite'
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -27,8 +29,8 @@ const UserCard = ({ user }: UserCardProps) => {
             </div>
           </div>
         </div>
-        <Button size="sm" variant="outline">
-          View
+        <Button asChild size="sm" variant="outline">
+          <Link to={`/profile/${user.$id}`}>View</Link>
         </Button>
       </CardHeader>
     </Card>
