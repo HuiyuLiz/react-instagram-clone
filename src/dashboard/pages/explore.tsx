@@ -4,6 +4,7 @@ import { useInView } from 'react-intersection-observer'
 
 import SearchIcon from '@/components/icon/searchicon'
 import GridPostList from '@/components/shared/grid-post-list'
+import { Heading } from '@/components/shared/heading'
 import { Input } from '@/components/ui/input'
 import useDebounce from '@/hooks/useDebounce'
 import { useGetPosts, useSearchPosts } from '@/lib/tanstack-query/post-query'
@@ -74,7 +75,7 @@ const Explore = () => {
         />
       </div>
 
-      <h1 className="text-xl font-bold">Popular Posts</h1>
+      <Heading title="Popular Posts"></Heading>
 
       <div className="flex w-full max-w-5xl flex-wrap gap-9">
         {showSearchResults ? (

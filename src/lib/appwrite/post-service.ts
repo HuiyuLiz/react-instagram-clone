@@ -304,3 +304,26 @@ export async function getInfinitePosts({ pageParam }: { pageParam: number }) {
     console.log(error)
   }
 }
+
+export async function getUsers(limit?: number) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const queries: any[] = [Query.orderDesc('$createdAt')]
+
+  if (isValueDefined(limit)) {
+    queries.push(Query.limit(limit))
+  }
+
+  try {
+    const users = await databases.listDocuments(
+      appwriteConfig.DATABASE_ID,
+      appwriteConfig.COLLECTION_USERS_ID,
+      queries
+    )
+
+    if (!isValueDefined(users)) throw Error('Failed to get users')
+
+    return users
+  } catch (error) {
+    console.log(error)
+  }
+}

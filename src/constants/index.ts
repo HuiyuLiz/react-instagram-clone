@@ -18,7 +18,7 @@ export const sidebarLinks = [
   {
     icon: UserIcon,
     route: '/all-users',
-    label: 'People'
+    label: 'All Users'
   },
   {
     icon: BookMarkIcon,

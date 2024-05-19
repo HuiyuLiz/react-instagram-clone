@@ -7,7 +7,14 @@ import DashboardLayout from '@/dashboard/dashboard-layout'
 
 import AuthLayout from './auth/auth-layout'
 import { AuthProvider } from './context/auth-context'
-import { CreatePost, EditPost, Explore, Home, Post } from './dashboard/pages'
+import {
+  CreatePost,
+  EditPost,
+  Explore,
+  Home,
+  Post,
+  Users
+} from './dashboard/pages'
 
 const AuthProviderLayout = () => (
   <AuthProvider>
@@ -43,6 +50,10 @@ const router = createBrowserRouter([
           {
             path: '/explore',
             element: <Explore />
+          },
+          {
+            path: '/all-users',
+            element: <Users />
           }
         ]
       },
