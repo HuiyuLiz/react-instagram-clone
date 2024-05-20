@@ -4,14 +4,15 @@ import PostCard from './post-card'
 
 interface GridPostListProps {
   posts: Models.Document[]
+  showDetails?: boolean
 }
 
-const GridPostList = ({ posts }: GridPostListProps) => {
+const GridPostList = ({ posts, showDetails }: GridPostListProps) => {
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
       {posts?.map((post: Models.Document) => (
         <div key={post.$id}>
-          <PostCard post={post}></PostCard>
+          <PostCard post={post} showDetails={showDetails}></PostCard>
         </div>
       ))}
     </div>

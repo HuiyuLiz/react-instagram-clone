@@ -30,7 +30,7 @@ const Saved = () => {
           {savePosts.length === 0 ? (
             <ErrorMessage message="No available posts."></ErrorMessage>
           ) : (
-            <GridPostList posts={savePosts} />
+            <GridPostList posts={savePosts} showDetails={false} />
           )}
         </ul>
       )}

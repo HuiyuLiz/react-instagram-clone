@@ -7,6 +7,7 @@ import DashboardLayout from '@/dashboard/dashboard-layout'
 
 import AuthLayout from './auth/auth-layout'
 import { AuthProvider } from './context/auth-context'
+import ModalLayout from './dashboard/modal-layout'
 import {
   CreatePost,
   EditPost,
@@ -41,8 +42,13 @@ const router = createBrowserRouter([
             element: <Home />
           },
           {
-            path: '/posts/:id',
-            element: <Post />
+            element: <ModalLayout />,
+            children: [
+              {
+                path: '/posts/:id',
+                element: <Post />
+              }
+            ]
           },
           {
             path: '/create-post',

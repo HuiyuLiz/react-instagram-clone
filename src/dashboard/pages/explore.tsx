@@ -78,7 +78,7 @@ const Explore = () => {
 
       <Heading title="Popular Posts"></Heading>
 
-      <div className="flex w-full max-w-5xl flex-wrap gap-9">
+      <div className="flex w-full flex-wrap gap-9">
         {showSearchResults ? (
           <SearchResults
             isSearchFetching={isSearchFetching}
