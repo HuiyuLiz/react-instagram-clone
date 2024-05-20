@@ -25,7 +25,7 @@ const UserList = () => {
     return <UserCardSkeleton></UserCardSkeleton>
   } else if (isValueDefined(users) && users.documents.length > 0) {
     return (
-      <div className="flex h-full snap-x snap-proximity gap-4 overflow-x-scroll md:h-auto lg:flex-col">
+      <div className="flex h-full snap-x snap-proximity gap-4 overflow-x-scroll md:h-auto lg:flex-col lg:overflow-x-auto">
         {users?.documents.map(user => (
           <div className="min-w-[200px] snap-center lg:w-auto" key={user.$id}>
             <UserCard user={user}></UserCard>
@@ -42,7 +42,7 @@ const UserList = () => {
 
 const Home = () => {
   return (
-    <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-[1fr_300px]">
+    <div className="grid gap-8 lg:grid-cols-[1fr_280px]">
       <PostList></PostList>
       <UserList></UserList>
     </div>

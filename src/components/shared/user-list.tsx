@@ -3,6 +3,7 @@ import { type Models } from 'appwrite'
 import { useGetUsers } from '@/lib/tanstack-query/user-query'
 import { isValueDefined } from '@/lib/utils'
 
+import ErrorMessage from '../loader/error-message'
 import UserCardSkeleton from '../loader/user-card-skeleton'
 import UserCard from './user-card'
 
@@ -21,9 +22,7 @@ const UserList = () => {
       </>
     )
   } else {
-    list = (
-      <p className="text-light-4 mt-10 w-full text-center">No users found.</p>
-    )
+    list = <ErrorMessage message="No users found."></ErrorMessage>
   }
 
   return <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">{list}</div>

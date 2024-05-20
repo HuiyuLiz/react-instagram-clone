@@ -3,6 +3,7 @@ import { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
 import HeartIcon from '@/components/icon/hearticon'
+import { MobileSidebar } from '@/components/shared/mobile-sidebar'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import {
@@ -28,7 +29,10 @@ const Header = () => {
     }
   }, [isSuccess, navigate])
   return (
-    <header className="flex h-14 items-center justify-between border-b bg-white px-4 dark:border-gray-800 dark:bg-gray-950">
+    <header className="supports-backdrop-blur:bg-background/60 fixed left-0 right-0 top-0 z-20 flex h-14 items-center justify-between border-b bg-background/95 bg-white px-4 backdrop-blur lg:left-[280px]">
+      <div className="block lg:!hidden">
+        <MobileSidebar />
+      </div>
       <div className="ml-auto flex items-center gap-4">
         <Button variant="ghost" className="rounded-full" size="icon" asChild>
           <Link to={'/liked'}>

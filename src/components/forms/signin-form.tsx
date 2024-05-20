@@ -32,8 +32,8 @@ export default function SigninForm() {
   const disabledStatus = isSignInAccount
 
   const defaultValues = {
-    email: '',
-    password: ''
+    email: import.meta.env.VITE_LOGIN_EMAIL ?? '',
+    password: import.meta.env.VITE_LOGIN_PASSWORD ?? ''
   }
   const form = useForm<SignInFormValue>({
     resolver: zodResolver(signinformSchema),

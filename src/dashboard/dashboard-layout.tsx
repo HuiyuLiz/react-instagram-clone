@@ -2,20 +2,19 @@ import { Outlet } from 'react-router-dom'
 
 import Header from '@/components/shared/header'
 import Sidebar from '@/components/shared/sidebar'
+import { ScrollArea } from '@/components/ui/scroll-area'
 
 const DashboardLayout = () => {
   return (
-    <>
-      <div className="grid min-h-screen w-full lg:grid-cols-[280px_1fr]">
-        <Sidebar></Sidebar>
-        <div className="flex flex-col space-y-8">
-          <Header></Header>
-          <div className="container mx-auto pb-16">
-            <Outlet />
-          </div>
+    <div className="grid h-screen w-full overflow-hidden lg:grid-cols-[280px_1fr]">
+      <Header></Header>
+      <Sidebar />
+      <ScrollArea className="h-full w-full pt-8">
+        <div className="container py-16">
+          <Outlet />
         </div>
-      </div>
-    </>
+      </ScrollArea>
+    </div>
   )
 }
 
