@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { useInView } from 'react-intersection-observer'
 
 import SearchIcon from '@/components/icon/searchicon'
+import ErrorMessage from '@/components/loader/error-message'
 import Loading from '@/components/loader/loading'
 import GridPostList from '@/components/shared/grid-post-list'
 import { Heading } from '@/components/shared/heading'
@@ -28,9 +29,7 @@ const SearchResults = ({
   ) {
     return <GridPostList posts={searchedPosts.documents} />
   } else {
-    return (
-      <p className="text-light-4 mt-10 w-full text-center">No results found.</p>
-    )
+    return <ErrorMessage message="No results found."></ErrorMessage>
   }
 }
 
