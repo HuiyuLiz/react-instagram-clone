@@ -1,6 +1,6 @@
 import BookMarkIcon from '@/components/icon/bookmarkicon'
+import CreateIcon from '@/components/icon/createicon'
 import HomeIcon from '@/components/icon/homeicon'
-import PlusIcon from '@/components/icon/plusicon'
 import SearchIcon from '@/components/icon/searchicon'
 import UserIcon from '@/components/icon/usericon'
 
@@ -26,7 +26,7 @@ export const sidebarLinks = [
     label: 'Saved'
   },
   {
-    icon: PlusIcon,
+    icon: CreateIcon,
     route: '/create-post',
     label: 'Create Post'
   }

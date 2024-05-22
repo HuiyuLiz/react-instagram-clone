@@ -1,6 +1,6 @@
 import { type JSX } from 'react/jsx-runtime'
 
-const PlusIcon = (
+const CreateIcon = (
   props: JSX.IntrinsicAttributes & React.SVGProps<SVGSVGElement>
 ) => {
   return (
@@ -22,4 +22,4 @@ const PlusIcon = (
   )
 }
 
-export default PlusIcon
+export default CreateIcon
