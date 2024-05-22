@@ -11,10 +11,10 @@ import ModalLayout from './dashboard/modal-layout'
 import {
   CreatePost,
   EditPost,
-  Error,
   Explore,
   Home,
   LikedPosts,
+  NotFound,
   Post,
   Profile,
   Saved,
@@ -31,7 +31,7 @@ const AuthProviderLayout = () => (
 const router = createBrowserRouter([
   {
     element: <AuthProviderLayout />,
-    errorElement: <Error />,
+    errorElement: <NotFound />,
     children: [
       {
         path: '/',

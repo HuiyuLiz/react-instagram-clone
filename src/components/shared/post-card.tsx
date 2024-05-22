@@ -28,13 +28,13 @@ const PostCard = ({ post, showDetails = true }: PostCardProps) => {
             width={400}
           />
           {showDetails && (
-            <div className="absolute bottom-5 left-5 z-50 flex w-full flex-col text-white">
+            <div className="absolute bottom-5 z-50 flex w-full flex-col px-4 text-white">
               <div className="font-bold"> {post?.creator?.name}</div>
-              <div className="flex w-full gap-2 text-sm text-gray-300 ">
-                <p className="font-bold lg:text-sm ">
+              <div className="flex w-full flex-wrap gap-2 text-sm text-gray-300">
+                <div className="font-bold lg:text-sm ">
                   {multiFormatDateString(post.$createdAt)}
-                </p>
-                •<p className="font-bold lg:text-sm">{post?.location}</p>
+                </div>
+                •<div className="font-bold lg:text-sm">{post?.location}</div>
               </div>
             </div>
           )}

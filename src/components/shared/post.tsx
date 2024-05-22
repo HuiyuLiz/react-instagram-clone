@@ -27,69 +27,67 @@ const Post = () => {
   }
 
   return (
-    <>
-      <Card className="grid grid-cols-1 gap-4 border-0 shadow-none lg:grid-cols-[480px_1fr] lg:border">
-        <CardContent className="p-0">
-          <div className="group relative block aspect-square overflow-hidden">
-            <img
-              alt="post"
-              className="h-full w-full object-cover "
-              height={400}
-              src={post?.imageUrl ?? '/placeholder.svg'}
-              style={{
-                aspectRatio: '400/400',
-                objectFit: 'cover'
-              }}
-              width={400}
-            />
-          </div>
-        </CardContent>
+    <Card className="grid grid-cols-1 gap-4 border-0 shadow-none lg:grid-cols-[480px_1fr] lg:border ">
+      <CardContent className="p-0">
+        <div className="group relative block aspect-square overflow-hidden">
+          <img
+            alt="post"
+            className="h-full w-full object-cover "
+            height={400}
+            src={post?.imageUrl ?? '/placeholder.svg'}
+            style={{
+              aspectRatio: '400/400',
+              objectFit: 'cover'
+            }}
+            width={400}
+          />
+        </div>
+      </CardContent>
 
-        <div className="flex flex-col items-stretch justify-between space-y-8 p-4 lg:my-4">
-          <div className="flex flex-col space-y-4">
-            <div className="flex items-center space-x-4">
-              <Avatar className="h-10 w-10">
-                <AvatarImage
-                  alt="user"
-                  src={post?.creator?.imageUrl ?? '/placeholder-user.jpg'}
-                />
-                <AvatarFallback>?</AvatarFallback>
-              </Avatar>
-              <div className="flex w-full flex-col">
-                <div className="font-bold"> {post?.creator.name}</div>
-                <div className="flex w-full gap-2 text-sm">
-                  <p className="lg:small-regular font-bold ">
-                    {multiFormatDateString(post.$createdAt)}
-                  </p>
-                  •<p className="lg:small-regular font-bold">{post.location}</p>
-                </div>
+      <div className="flex flex-col items-stretch justify-between space-y-8 p-4 lg:my-4">
+        <div className="flex flex-col space-y-4">
+          <div className="flex items-center space-x-4">
+            <Avatar className="h-10 w-10">
+              <AvatarImage
+                alt="user"
+                src={post?.creator?.imageUrl ?? '/placeholder-user.jpg'}
+              />
+              <AvatarFallback>?</AvatarFallback>
+            </Avatar>
+            <div className="flex w-full flex-col">
+              <div className="font-bold"> {post?.creator.name}</div>
+              <div className="flex w-full gap-2 text-sm">
+                <p className="lg:small-regular font-bold ">
+                  {multiFormatDateString(post.$createdAt)}
+                </p>
+                •<p className="lg:small-regular font-bold">{post.location}</p>
               </div>
             </div>
-            <PostContent post={post}></PostContent>
           </div>
+          <PostContent post={post}></PostContent>
+        </div>
 
-          <div className="flex flex-col items-center justify-between lg:flex-row">
-            <PostStatus post={post} userId={user.id}></PostStatus>
+        <div className="flex flex-col items-center justify-between lg:flex-row">
+          <PostStatus post={post} userId={user.id}></PostStatus>
 
-            <div
-              className={
-                user.id !== post?.creator?.$id
-                  ? 'hidden'
-                  : 'flex items-center justify-between space-x-4'
-              }
-            >
-              <Button variant="destructive" onClick={handleDeletePost}>
-                Delete
-              </Button>
+          <div
+            className={
+              user.id !== post?.creator?.$id
+                ? 'hidden'
+                : 'flex items-center justify-between space-x-4'
+            }
+          >
+            <Button variant="destructive" onClick={handleDeletePost}>
+              Delete
+            </Button>
 
-              <Button asChild variant={'outline'}>
-                <Link to={`/update-post/${post?.$id}`}>Edit</Link>
-              </Button>
-            </div>
+            <Button asChild variant={'outline'}>
+              <Link to={`/update-post/${post?.$id}`}>Edit</Link>
+            </Button>
           </div>
         </div>
-      </Card>
-    </>
+      </div>
+    </Card>
   )
 }
 

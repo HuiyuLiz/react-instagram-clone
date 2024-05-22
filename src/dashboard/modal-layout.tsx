@@ -4,10 +4,11 @@ import Modal from '@/components/shared/modal'
 import { isValueDefined } from '@/lib/utils'
 
 const ModalLayout = () => {
-  const { state } = useLocation()
+  const location = useLocation()
+  const background = location.state?.backgroundLocation
 
-  return isValueDefined(state?.backgroundLocation) ? (
-    <Modal open={isValueDefined(state?.backgroundLocation)}>
+  return isValueDefined(background) ? (
+    <Modal open={isValueDefined(background)}>
       <Outlet />
     </Modal>
   ) : (

@@ -1,4 +1,4 @@
-import { ID, Query } from 'appwrite'
+import { ID, type ImageGravity, Query } from 'appwrite'
 
 import { type NewPost, type UpdatePost } from '../type'
 import { isValueDefined } from '../utils'
@@ -155,7 +155,7 @@ export function getFilePreview(fileId: string) {
       fileId,
       2000,
       2000,
-      'top',
+      'top' as ImageGravity,
       100
     )
 
