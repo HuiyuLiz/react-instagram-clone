@@ -29,23 +29,17 @@ const Post = () => {
   return (
     <Card className="grid grid-cols-1 gap-4 border-0 shadow-none lg:grid-cols-[480px_1fr] lg:border ">
       <CardContent className="p-0">
-        <div className="group relative block aspect-square overflow-hidden">
+        <div className="d-block aspect-square h-full w-full overflow-hidden">
           <img
             alt="post"
-            className="h-full w-full object-cover "
-            height={400}
+            className="h-auto w-full object-contain"
             src={post?.imageUrl ?? '/placeholder.svg'}
-            style={{
-              aspectRatio: '400/400',
-              objectFit: 'cover'
-            }}
-            width={400}
           />
         </div>
       </CardContent>
 
-      <div className="flex flex-col items-stretch justify-between space-y-8 p-4 lg:my-4">
-        <div className="flex flex-col space-y-4">
+      <div className="flex flex-col-reverse items-stretch justify-between px-4 lg:mt-4 lg:flex-col lg:p-4">
+        <div className="flex flex-1 flex-col space-y-4">
           <div className="flex items-center space-x-4">
             <Avatar className="h-10 w-10">
               <AvatarImage
@@ -64,10 +58,12 @@ const Post = () => {
               </div>
             </div>
           </div>
-          <PostContent post={post}></PostContent>
+          <div className="flex flex-1">
+            <PostContent post={post}></PostContent>
+          </div>
         </div>
 
-        <div className="flex flex-col items-center justify-between lg:flex-row">
+        <div className="mb-4 flex flex-col items-center justify-between lg:mb-0 lg:flex-row ">
           <PostStatus post={post} userId={user.id}></PostStatus>
 
           <div

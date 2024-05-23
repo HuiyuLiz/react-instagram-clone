@@ -32,12 +32,14 @@ export const postFormSchema = z.object({
     .string()
     .min(1, { message: 'This field is required' })
     .max(1000, { message: 'Maximum 1000 characters.' }),
-  tags: z.array(
-    z.object({
-      id: z.string(),
-      text: z.string()
-    })
-  )
+  tags: z
+    .array(
+      z.object({
+        id: z.string(),
+        text: z.string()
+      })
+    )
+    .max(5, { message: 'Maximum 5 tags' })
 })
 
 export type PostFormValue = z.infer<typeof postFormSchema>
