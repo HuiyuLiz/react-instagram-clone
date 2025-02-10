@@ -22,3 +22,10 @@ This app will allow users to easily share photos, interact with friends, and dis
 - TypeScript
 - Shadcn
 - Tailwind CSS
+
+
+Hello sir, nice to meet you! 
+I'm an International Headhunter and am looking for devs who are fluent in Chinese. I have seen you on Github and  am quite impressed . I would like to offer you H5 Frontend job, ranging from 12.000 - 28.700rmb (deal depends on ur ability), urgently ! Hope to work with you. 🥰
+Can u contact me by those way
+My email: williamthai1911@gmail.com
+My telegram : Telegr : https://t.me/duyhau1911
