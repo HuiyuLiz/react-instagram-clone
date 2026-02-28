@@ -20,7 +20,14 @@ const PostCard = ({ post, showDetails = true }: PostCardProps) => {
             alt="post"
             className="h-full w-full object-cover transition-all duration-300 group-hover:scale-105"
             height={400}
-            src={post?.imageUrl ?? '/placeholder.svg'}
+            src={
+              post?.imageUrl
+                ?.toString()
+                .replace(
+                  /\/preview\?[^"]*/,
+                  `/view?project=${import.meta.env.VITE_APPWRITE_PROJECT_ID}`
+                ) ?? '/placeholder.svg'
+            }
             style={{
               aspectRatio: '400/400',
               objectFit: 'cover'

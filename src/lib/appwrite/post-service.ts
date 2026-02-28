@@ -1,4 +1,4 @@
-import { ID, type ImageGravity, Query } from 'appwrite'
+import { ID, type Query } from 'appwrite'
 
 import { type NewPost, type UpdatePost } from '../type'
 import { isValueDefined } from '../utils'
@@ -150,14 +150,7 @@ export async function uploadFile(file: File) {
 
 export function getFilePreview(fileId: string) {
   try {
-    const fileUrl = storage.getFilePreview(
-      appwriteConfig.STORAGE_MEDIA_ID, // bucket ID
-      fileId,
-      2000,
-      2000,
-      'top' as ImageGravity,
-      100
-    )
+    const fileUrl = storage.getFileView(appwriteConfig.STORAGE_MEDIA_ID, fileId)
 
     if (!isValueDefined(fileUrl)) throw Error('Failed to get file preview')
 
